@@ -55,7 +55,9 @@ async def start(client, message):
             ],[
             InlineKeyboardButton('🔗 More Help', callback_data='leech_url_help'),
             InlineKeyboardButton('⚙ Open Settings', callback_data='openSettings'),
-            ]]
+            ],[
+            InlineKeyboardButton('🔥 Download Movies 🔥', url='https://t.me/addlist/S_bg1Q8xENkxN2Jl')
+        ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await message.reply_photo(
             photo=random.choice(PICS),
@@ -105,7 +107,9 @@ async def start(client, message):
         ],[
             InlineKeyboardButton('🔗 More Help ', callback_data='leech_url_help'),
             InlineKeyboardButton('⚙ Open Settings ', callback_data='openSettings'),
-            ]]
+            ],[
+            InlineKeyboardButton('🔥 Download Movies 🔥', url='https://t.me/addlist/S_bg1Q8xENkxN2Jl')
+        ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await message.reply_photo(
             photo=random.choice(PICS),
