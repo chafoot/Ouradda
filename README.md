@@ -12,7 +12,7 @@
     - [+] ⚡️ Added `file renaming` feature ⚡️
       - super premium repo...
     - [+] ⚡️ Support 2GB + Files ⚡️
-    - [+] ⚡️ [Watch Latest Tutorial](https://youtube.com/LazyDeveloperr)  ⚡️
+    - [+] ⚡️ [Watch Latest Tutorial](https://youtube.com/)  ⚡️
 - [x] Auto Filter
 - [x] Manual Filter
 - [x] IMDB
