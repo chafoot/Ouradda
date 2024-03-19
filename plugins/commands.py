@@ -242,9 +242,9 @@ async def start(client, message):
                     f_caption=CUSTOM_FILE_CAPTION.format(file_name= '' if title is None else title, file_size='' if size is None else size, file_caption='')
                 except:
                     return
-            l = await msg.edit_caption(f_caption)
-            asyncio.sleep(30)
-            await l.delete()
+            await msg.edit_caption(f_caption)
+            await asyncio.sleep(10)
+            await files_.delete()
             return
         except:
             pass
