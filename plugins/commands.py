@@ -243,8 +243,6 @@ async def start(client, message):
                 except:
                     return
             await msg.edit_caption(f_caption)
-            await asyncio.sleep(10)
-            await msg.delete()
             return
         except:
             pass
@@ -265,13 +263,15 @@ async def start(client, message):
     button = InlineKeyboardButton('▶ Gen Stream / Download Link', callback_data=f'generate_stream_link:{file_id}')
     # Create the inline keyboard markup with the button
     keyboard = InlineKeyboardMarkup([[button]])
-    await client.send_cached_media(
+    a = await client.send_cached_media(
         chat_id=message.from_user.id,
         file_id=file_id,
         caption=f_caption,
         reply_markup=keyboard,  # Use the created keyboard
         protect_content=True if pre == 'filep' else False,
         )
+    await asyncio.sleep(20)
+            await a.delete()
 
 
 @Client.on_message(filters.command('channel') & filters.user(ADMINS))
