@@ -244,7 +244,7 @@ async def start(client, message):
                     return
             await msg.edit_caption(f_caption)
             await asyncio.sleep(10)
-            await files_.delete()
+            await msg.delete()
             return
         except:
             pass
@@ -272,6 +272,9 @@ async def start(client, message):
         reply_markup=keyboard,  # Use the created keyboard
         protect_content=True if pre == 'filep' else False,
         )
+
+        await asyncio.sleep(20)
+            await msg.delete()
 
 
 @Client.on_message(filters.command('channel') & filters.user(ADMINS))
