@@ -270,8 +270,6 @@ async def start(client, message):
         reply_markup=keyboard,  # Use the created keyboard
         protect_content=True if pre == 'filep' else False,
         )
-    await asyncio.sleep(20)
-            await a.delete()
 
 
 @Client.on_message(filters.command('channel') & filters.user(ADMINS))
