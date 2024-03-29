@@ -166,7 +166,7 @@ async def broadcast_messages(user_id, message):
     except Exception as e:
         return False, "Error"
 
-    async def broadcast_messages_group(chat_id, message):
+async def broadcast_messages_group(chat_id, message):
     try:
         await message.copy(chat_id=chat_id)
         return True, "Success"
