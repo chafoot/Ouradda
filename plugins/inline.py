@@ -7,7 +7,7 @@ from utils import is_subscribed, get_size, temp
 from info import CACHE_TIME, AUTH_USERS, AUTH_CHANNEL, CUSTOM_FILE_CAPTION
 from database.connections_mdb import active_connection
 
-logger = logging.getLogger(name)
+logger = logging.getLogger(__name__)
 cache_time = 0 if AUTH_USERS or AUTH_CHANNEL else CACHE_TIME
 
 async def inline_users(query: InlineQuery):
