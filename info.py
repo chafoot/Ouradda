@@ -30,7 +30,7 @@ PICS = (environ.get('PICS', 'https://telegra.ph/file/7e56d907542396289fee4.jpg h
  
 # Admins, Channels & Users
 ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '').split()]
-CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '0').split()]
+CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '').split()]
 auth_users = [int(user) if id_pattern.search(user) else user for user in environ.get('AUTH_USERS', '').split()]
 AUTH_USERS = (auth_users + ADMINS) if auth_users else []
 auth_channel = environ.get('AUTH_CHANNEL')
@@ -76,7 +76,7 @@ REQ_CHANNEL = int(environ.get('REQ_CHANNEL'))
 # LAZY_AI_LOGS = int(environ.get("LAZY_AI_LOGS","")) #GIVE YOUR NEW LOG CHANNEL ID TO STORE MESSAGES THAT THEY SEARCH IN BOT PM.... [ i have added this to keep an eye on the users message, to avoid misuse of LazyPrincess ]
 
 # Requested Content template variables ---
-ADMIN_USRNM = environ.get('ADMIN_USRNM','real_heros') # WITHOUT @
+ADMIN_USRNM = environ.get('ADMIN_USRNM','ouraddaa') # WITHOUT @
 MAIN_CHANNEL_USRNM = environ.get('MAIN_CHANNEL_USRNM','ouraddaa') # WITHOUT @
 DEV_CHANNEL_USRNM = environ.get('DEV_CHANNEL_USRNM','ouraddaa') # WITHOUT @
 LAZY_YT_HANDLE = environ.get('LAZY_YT_HANDLE','ouraddaa')  # WITHOUT @ [  add only handle - don't add full url  ] 

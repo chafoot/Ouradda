@@ -7,18 +7,16 @@ from utils import is_subscribed, get_size, temp
 from info import CACHE_TIME, AUTH_USERS, AUTH_CHANNEL, CUSTOM_FILE_CAPTION
 from database.connections_mdb import active_connection
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(name)
 cache_time = 0 if AUTH_USERS or AUTH_CHANNEL else CACHE_TIME
 
 async def inline_users(query: InlineQuery):
-    if AUTH_USERS:
-        if query.from_user and query.from_user.id in AUTH_USERS:
-            return True
-        else:
-            return False
-    if query.from_user and query.from_user.id not in temp.BANNED_USERS:
+    if AUTH_USERS and query.from_user and query.from_user.id in AUTH_USERS:
         return True
-    return False
+    elif query.from_user and query.from_user.id not in temp.BANNED_USERS:
+        return True
+    else:
+        return False
 
 @Client.on_inline_query()
 async def answer(bot, query):
@@ -58,23 +56,24 @@ async def answer(bot, query):
                                                   offset=offset)
 
     for file in files:
-        title=file.file_name
-        size=get_size(file.file_size)
-        f_caption=file.caption
+        title = file.file_name
+        size = get_size(file.file_size)
+        f_caption = file.caption
         if CUSTOM_FILE_CAPTION:
             try:
-                f_caption=CUSTOM_FILE_CAPTION.format(file_name= '' if title is None else title, file_size='' if size is None else size, file_caption='' if f_caption is None else f_caption)
+                f_caption = CUSTOM_FILE_CAPTION.format(file_name=title if title else '', 
+                                                       file_size=size if size else '', 
+                                                       file_caption=f_caption if f_caption else '')
             except Exception as e:
                 logger.exception(e)
-                f_caption=f_caption
-        if f_caption is None:
-            f_caption = f"{file.file_name}"
+        if not f_caption:
+            f_caption = title or ''
         results.append(
             InlineQueryResultCachedDocument(
-                title=file.file_name,
+                title=title,
                 document_file_id=file.file_id,
                 caption=f_caption,
-                description=f'Size: {get_size(file.file_size)}\nType: {file.file_type}',
+                description=f'Size: {size}\nType: {file.file_type}',
                 reply_markup=reply_markup))
 
     if results:
@@ -83,7 +82,7 @@ async def answer(bot, query):
             switch_pm_text += f" for {string}"
         try:
             await query.answer(results=results,
-                           is_personal = True,
+                           is_personal=True,
                            cache_time=cache_time,
                            switch_pm_text=switch_pm_text,
                            switch_pm_parameter="start",
@@ -97,22 +96,14 @@ async def answer(bot, query):
         if string:
             switch_pm_text += f' for "{string}"'
 
-        await query.answer(results=[],
-                           is_personal = True,
+await query.answer(results=[],
+                           is_personal=True,
                            cache_time=cache_time,
                            switch_pm_text=switch_pm_text,
                            switch_pm_parameter="okay")
 
-
-
 def get_reply_markup(query):
     buttons = [
-        [
-            InlineKeyboardButton('Search again', switch_inline_query_current_chat=query)
-        ]
-        ]
+        [InlineKeyboardButton('Search again', switch_inline_query_current_chat=query)]
+    ]
     return InlineKeyboardMarkup(buttons)
-
-
-
-
