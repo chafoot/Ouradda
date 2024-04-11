@@ -242,15 +242,9 @@ async def start(client, message):
                     f_caption=CUSTOM_FILE_CAPTION.format(file_name= '' if title is None else title, file_size='' if size is None else size, file_caption='')
                 except:
                     return
-            await msg.edit_caption(f_caption)
-            # Auto-delete message after 10 minutes with disclaimer
-            disclaimer_text = "<b>❗️ Disclaimer:</b> This message will be automatically deleted in 10 minutes."
-            disclaimer_message = await client.send_message(chat_id=message.from_user.id, text=disclaimer_text)
-             # Sleep for 10 minutes before deleting the message
-            await asyncio.sleep(50)
-            # Delete the original message and the disclaimer message
+
+            await asyncio.sleep(30)
             await msg.delete()
-            await disclaimer_message.delete()
 
 
             return
