@@ -281,7 +281,7 @@ async def start(client, message):
     filesarr.append(msg)
 
     btn = [[
-            InlineKeyboardButton('❗ Get File Again ❗', callback_data=f'delfile:{file_id}')
+            InlineKeyboardButton('❗ Get File Again ❗', callback_data=f'{pre}#{file_id}')
             ],
             [InlineKeyboardButton('🔥 Search Again 🔥', url='https://t.me/+n-3mZ-8rPm4zMGVl')]
             ]
