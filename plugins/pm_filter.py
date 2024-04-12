@@ -1199,7 +1199,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
            #await asyncio.sleep(300)
            #await mybad.delete()
 
-            await asyncio.sleep(30)
+            await asyncio.sleep(200)
             await mybad.delete()
 
         except Exception as e:
