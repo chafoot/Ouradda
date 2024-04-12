@@ -283,7 +283,7 @@ async def start(client, message):
     btn = [[
             InlineKeyboardButton('❗ Get File Again ❗', callback_data=f'delfile#{file_id}')
                 #InlineKeyboardButton("❗ ɢᴇᴛ ꜰɪʟᴇ ᴀɢᴀɪɴ ❗", callback_data=f'delfile#{file_id}')
-            ]
+            ],
             [InlineKeyboardButton('🔥 Search Again 🔥', url='https://t.me/addlist/S_bg1Q8xENkxN2Jl')]
             ]
 
