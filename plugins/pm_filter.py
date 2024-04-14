@@ -1508,8 +1508,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
             parse_mode=enums.ParseMode.HTML
         )
     elif query.data == "lazyhome":
-        text = f"""\n⨳ *•.¸♡ L҉ΛＺ𝐲 ＭⓄｄ𝓔 ♡¸.•* ⨳\n\n**Please tell, what should i do with this file.?**\n"""
-        buttons = [[ InlineKeyboardButton("📝✧✧ S𝚝ar𝚝 re𝚗aᗰi𝚗g ✧✧📝", callback_data="rename") ],
+        text = f"""\n⨳ *•.¸♡ Our Addaa ♡¸.•* ⨳\n\n**Please tell, what should i do with this file.?**\n"""
+        buttons = [[ InlineKeyboardButton("📝✧✧ S𝚝ar𝚝 Renaming ✧✧📝", callback_data="rename") ],
                            [ InlineKeyboardButton("⨳  C L Ф S Ξ  ⨳", callback_data="cancel") ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await query.message.edit_text(
