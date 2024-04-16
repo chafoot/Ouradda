@@ -7,6 +7,7 @@ from database.ia_filterdb import Media
 from utils import get_size, temp, get_settings
 from Script import script
 from pyrogram.errors import ChatAdminRequired
+import asyncio 
 
 """-----------------------------------------https://t.me/Ouraddaa --------------------------------------"""
 
@@ -68,7 +69,19 @@ async def save_group(bot, message):
                         await (temp.MELCOW['welcome']).delete()
                     except:
                         pass
-                temp.MELCOW['welcome'] = await message.reply_video(video="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEizcmuT6s8Fcp_7qnib1jkll1vEAL7RaCyCI9sBNIwmhetjKAAbbGr-06dgyx1ggJPM1lQ_mQiYAa305IP0uR-RHpgEyUB4vZnikzKj8DR_NbA58qp_PLANIGWPaoUaeh71ePjiO7IZ7dopgGJSCAOEkIwbqvLYiu0IA0DyGZl-jrMxhRR3dwGEaz6cknI/s857/ELCOW_VID.gif", caption=f"<b>Hey , {u.mention}, Welcome to {message.chat.title}</b>", parse_mode="html")
+                temp.MELCOW['welcome'] = await message.reply_video(
+                                                 video=(MELCOW_VID), 
+                                                 caption=(script.MELCOW_ENG.format(u.mention, message.chat.title)),
+                                                 reply_markup=InlineKeyboardMarkup(
+                                                                         [[
+                                                                           InlineKeyboardButton("📌 ᴄᴏɴᴛᴀᴄᴛ ꜱᴜᴘᴘᴏʀᴛ 📌", url=f'https://t.me/ouraddaa_chat')
+                                                                         ]]
+                                                 ),
+                                                 parse_mode=enums.ParseMode.HTML
+                )
+        if settings["auto_delete"]:
+            await asyncio.sleep(30)
+            await (temp.MELCOW['welcome']).delete()
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
 async def leave_a_chat(bot, message):
