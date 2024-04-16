@@ -2308,7 +2308,7 @@ async def manual_filters(client, message, text=False):
     else:
         return False
 
-        async def global_filters(client, message, text=False):
+async def global_filters(client, message, text=False):
     settings = await get_settings(message.chat.id)
     group_id = message.chat.id
     name = text or message.text
