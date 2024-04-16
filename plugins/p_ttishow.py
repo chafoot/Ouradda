@@ -68,17 +68,7 @@ async def save_group(bot, message):
                         await (temp.MELCOW['welcome']).delete()
                     except:
                         pass
-                temp.MELCOW['welcome'] = await message.reply_video(
-                                                video=(MELCOW_VID),
-                                                caption=(script.MELCOW_ENG.format(u.mention, message.chat.title)),
-                                                reply_markup=InlineKeyboardMarkup(
-                                                                         [[
-                                                                           InlineKeyboardButton('🔥 Download Movies 🔥', url="https://t.me/+n-3mZ-8rPm4zMGVl"),
-                                                                           InlineKeyboardButton('🔍Search🔍', url=CHNL_LNK)
-                                                                        ]]
-                                                ),
-                                                parse_mode=enums.ParseMode.HTML
-                )
+                temp.MELCOW['welcome'] = await message.reply(f"<b>Hey , {u.mention}, Welcome to {message.chat.title}</b>")
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
 async def leave_a_chat(bot, message):
