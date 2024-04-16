@@ -1,5 +1,5 @@
 from pyrogram import Client, filters, enums
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from pyrogram.errors.exceptions.bad_request_400 import MessageTooLong, PeerIdInvalid
 from info import ADMINS, LOG_CHANNEL, SUPPORT_CHAT, MELCOW_NEW_USERS, MELCOW_VID, LAZY_GROUP_LOGS
 from database.users_chats_db import db
@@ -68,7 +68,7 @@ async def save_group(bot, message):
                         await (temp.MELCOW['welcome']).delete()
                     except:
                         pass
-                temp.MELCOW['welcome'] = await message.reply_video(video="https://telegra.ph/file/451f038b4e7c2ddd10dc0.mp4", caption=f"<b>Hey , {u.mention}, Welcome to {message.chat.title}</b>", parse_mode="html")
+                temp.MELCOW['welcome'] = await message.reply_video(video="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEizcmuT6s8Fcp_7qnib1jkll1vEAL7RaCyCI9sBNIwmhetjKAAbbGr-06dgyx1ggJPM1lQ_mQiYAa305IP0uR-RHpgEyUB4vZnikzKj8DR_NbA58qp_PLANIGWPaoUaeh71ePjiO7IZ7dopgGJSCAOEkIwbqvLYiu0IA0DyGZl-jrMxhRR3dwGEaz6cknI/s857/ELCOW_VID.gif", caption=f"<b>Hey , {u.mention}, Welcome to {message.chat.title}</b>", parse_mode="html")
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
 async def leave_a_chat(bot, message):
