@@ -188,7 +188,9 @@ async def answer(bot, query):
 
                            switch_pm_parameter="okay")
 
-
+# Delete the inline query message
+    await asyncio.sleep(10)
+    await bot.delete_messages(chat_id=query.from_user.id, message_ids=query.id)
 
 
 
