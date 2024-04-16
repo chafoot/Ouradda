@@ -92,11 +92,12 @@ async def answer(bot, query):
 
     offset = int(query.offset or 0)
 
-    reply_markup = get_reply_markup(query=string)
+    k = reply_markup = get_reply_markup(query=string)
 
     files, next_offset, total = await get_search_results(string, file_type=file_type, max_results=10, offset=offset)
 
-                                                 
+    await asyncio.sleep(10)
+    await k.delete()                                             
 
     for file in files:
 
@@ -188,9 +189,6 @@ async def answer(bot, query):
 
                            switch_pm_parameter="okay")
 
-# Delete the inline query message
-    await asyncio.sleep(10)
-    await bot.delete_messages(chat_id=query.from_user.id, message_ids=query.id)
 
 
 
