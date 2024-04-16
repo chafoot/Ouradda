@@ -92,12 +92,11 @@ async def answer(bot, query):
 
     offset = int(query.offset or 0)
 
-    k = reply_markup = get_reply_markup(query=string)
+    reply_markup = get_reply_markup(query=string)
 
     files, next_offset, total = await get_search_results(string, file_type=file_type, max_results=10, offset=offset)
 
-    await asyncio.sleep(10)
-    await k.delete()                                             
+                                          
 
     for file in files:
 
