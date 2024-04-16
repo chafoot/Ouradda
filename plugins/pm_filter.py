@@ -1242,9 +1242,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
         # Send message to user
         try:
             btn = [[
-                InlineKeyboardButton(text=f"Google", url=f"https://google.com/search?q={movie}"),
+                InlineKeyboardButton(text=f"🅶 Google", url=f"https://google.com/search?q={movie}"),
             
-                InlineKeyboardButton(text=f"Bing", url=f"https://bing.com/search?q={movie}")
+                InlineKeyboardButton(text=f"🅱 Bing", url=f"https://bing.com/search?q={movie}")
             ]]
             btn_lzdv = [
                 [
@@ -1267,9 +1267,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
         # Send message to user
         try:
             btn = [[
-                InlineKeyboardButton(text=f"🔍 Search Here 🔎", url=f"https://telegram.me/{MOVIE_GROUP_USERNAME}")
+                InlineKeyboardButton(text=f"🅶 Google", url=f"https://google.com/search?q={movie}")
             ],[
-                InlineKeyboardButton(text=f"🐞 REPORT BUG 🐞", url=f"https://telegram.me/ouraddaa_chat")
+                InlineKeyboardButton(text=f"🅱 Bing", url=f"https://bing.com/search?q={movie}")
             ]]
             btn_lzdv = [
                 [
@@ -1315,9 +1315,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
         # Send message to user
         try:
             btn = [[
-                InlineKeyboardButton(text=f"Google", url=f"https://google.com/search?q={movie}"),
+                InlineKeyboardButton(text=f"🅶 Google", url=f"https://google.com/search?q={movie}"),
             
-                InlineKeyboardButton(text=f"Bing", url=f"https://bing.com/search?q={movie}")
+                InlineKeyboardButton(text=f"🅱 Bing", url=f"https://bing.com/search?q={movie}")
             ]]
             btn_lzdv = [
                 [
@@ -1340,9 +1340,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
         # Send message to user
         try:
             btn = [[
-                InlineKeyboardButton(text=f"Google", url=f"https://google.com/search?q={movie}"),
+                InlineKeyboardButton(text=f"🅶 Google", url=f"https://google.com/search?q={movie}"),
             
-                InlineKeyboardButton(text=f"Bing", url=f"https://bing.com/search?q={movie}")
+                InlineKeyboardButton(text=f"🅱 Bing", url=f"https://bing.com/search?q={movie}")
             ]]
             btn_lzdv = [
                 [
@@ -2008,7 +2008,7 @@ async def advantage_spell_chok(msg):
     movielist += [(re.sub(r'(\-|\(|\)|_)', '', i, flags=re.IGNORECASE)).strip() for i in gs_parsed]
     movielist = list(dict.fromkeys(movielist))  # removing duplicates
     if not movielist:
-        k = await msg.reply("Hey Sona! The requested content is currently unavailable in our database, have some patience 🙂 - our great admin will upload it as soon as possible \n\n               **or**\n\nDiscuss issue with admin here 👉  <a href='https://t.me/ouraddaa_chat'>Discuss Here</a> ♥️ ")
+        k = await msg.reply("Hey Sona! The requested content is currently unavailable in our database, have some patience 🙂 - our great admin will upload it as soon as possible \n\n We Love You 3000 ❤️")
         await asyncio.sleep(10)
         await k.delete()
         return

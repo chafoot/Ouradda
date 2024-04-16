@@ -34,6 +34,8 @@ Thanks for thinking about us.\nIt seems that you really love <a href=https://t.m
 
     CUSTOM_CAPTION_UL_FILE = " "
 
+     MELCOW_ENG = """<b>Hᴇʟʟᴏ {} 😍, Aɴᴅ Wᴇʟᴄᴏᴍᴇ Tᴏ {} Gʀᴏᴜᴘ ❤️</b>"""
+
     SLOW_URL_DECED = "Gosh that seems to be a very slow URL. Since you were screwing my home, I am in no mood to download this file. Please provide me fast download url 👊"
 
     HELP_TXT = """𝙷𝙴𝚈 {}
