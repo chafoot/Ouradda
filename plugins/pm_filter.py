@@ -1691,7 +1691,7 @@ async def auto_filter(client, msg, spoll=False):
             user_id = message.from_user.id
             files, offset, total_results = await get_search_results(search.lower(), offset=0, filter=True)
             if settings["spell_check"]:
-                    return await advantage_spell_chok(msg)
+                return await advantage_spell_chok(msg)
             if not files:
                 await client.send_message(req_channel,f"-🦋 #REQUESTED_CONTENT 🦋-\n\n📝 **Content Name** : `{search}`\n**Requested By** : {message.from_user.first_name}\n**USER ID** : {user_id}\n**Group Name** : `{message.chat.title}`\n**Group Id** : `{message.chat.id}`\n\n🗃️",
                                                                                                        reply_markup=InlineKeyboardMarkup([
@@ -1708,8 +1708,8 @@ async def auto_filter(client, msg, spoll=False):
                 await l.delete()    
                 #if settings["spell_check"]:
                 #    return await advantage_spell_chok(msg)
-                else:
-                    return
+                    else:
+                        return
         else: 
             return
     else:
