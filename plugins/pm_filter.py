@@ -1970,11 +1970,11 @@ async def auto_filter(client, msg, spoll=False):
         await msg.message.delete()
 
 # Born to make history @LazyDeveloper !
-async def advantage_spell_chok(client, msg):
+async def advantage_spell_chok(msg):
     mv_id = msg.id
     mv_rqst = msg.text
     reqstr1 = msg.from_user.id if msg.from_user else 0
-    reqstr = await client.get_users(reqstr1)
+    user = await client.get_users(reqstr1)
     settings = await get_settings(msg.chat.id)
     find = mv_rqst.split(" ")
     query = ""
@@ -1992,15 +1992,7 @@ async def advantage_spell_chok(client, msg):
         gs_parsed = []
         if not g_s:
             reqst_gle = query.replace(" ", "+")
-            button = [[
-                       InlineKeyboardButton("📝 ʀᴇǫᴜᴇꜱᴛ ʜᴇʀᴇ", url=f"https://t.me/+n-3mZ-8rPm4zMGVl")
-            ]]
-            if NO_RESULTS_MSG:
-                await client.send_message(chat_id=LOG_CHANNEL, text=(script.NORSLTS.format(reqstr.id, reqstr.mention, mv_rqst)))
-            k = await msg.reply_text(
-                text=script.I_CUDNT.format(mv_rqst),
-                reply_markup=InlineKeyboardMarkup(button)
-            )
+            k = await msg.reply("I couldn't find any movie in that name.")
             await asyncio.sleep(30)
             await k.delete()
             return
@@ -2027,17 +2019,7 @@ async def advantage_spell_chok(client, msg):
                     movielist += [movie.get('title') for movie in imdb_s]
         movielist += [(re.sub(r'(\-|\(|\)|_)', '', i, flags=re.IGNORECASE)).strip() for i in gs_parsed]
         movielist = list(dict.fromkeys(movielist))  # removing duplicates
-        if not movielist:
-            reqst_gle = query.replace(" ", "+")
-            button = [[
-                       InlineKeyboardButton("📝 ʀᴇǫᴜᴇꜱᴛ ʜᴇʀᴇ", url=f"https://t.me/+n-3mZ-8rPm4zMGVl")
-            ]]
-            if NO_RESULTS_MSG:
-                await client.send_message(chat_id=LOG_CHANNEL, text=(script.NORSLTS.format(reqstr.id, reqstr.mention, mv_rqst)))
-            k = await msg.reply_text(
-                text=script.I_CUDNT.format(mv_rqst),
-                reply_markup=InlineKeyboardMarkup(button)
-            )
+        if not movielist:k = await msg.reply("Hey Sona! The requested content is currently unavailable in our database, have some patience 🙂 - our great admin will upload it as soon as possible \n\n               **or**\n\nDiscuss issue with admin here 👉  <a href='https://t.me/ouraddaa_chat'>Discuss Here</a> ♥️ ")
             await asyncio.sleep(30)
             await k.delete()
             return
@@ -2050,7 +2032,7 @@ async def advantage_spell_chok(client, msg):
         ] for k, movie in enumerate(movielist)]
         btn.append([InlineKeyboardButton(text="↭ ᴄʟᴏꜱᴇ ↭", callback_data=f'spol#{reqstr1}#close_spellcheck')])
         spell_check_del = await msg.reply_text(
-            text=script.CUDNT_FND.format(mv_rqst),
+            text= "Hey sona, Sᴘᴇʟʟɪɴɢ Mɪꜱᴛᴀᴋᴇ Bʀᴏ ‼️\nᴅᴏɴ'ᴛ ᴡᴏʀʀʏ 😊 Cʜᴏᴏꜱᴇ ᴛʜᴇ ᴄᴏʀʀᴇᴄᴛ ᴏɴᴇ ʙᴇʟᴏᴡ 👇",
             reply_markup=InlineKeyboardMarkup(btn)
         )
         try:
@@ -2074,9 +2056,8 @@ async def advantage_spell_chok(client, msg):
                        InlineKeyboardButton("📝 ʀᴇǫᴜᴇꜱᴛ ʜᴇʀᴇ", url=f"https://t.me/+n-3mZ-8rPm4zMGVl")
             ]]
             if NO_RESULTS_MSG:
-                await client.send_message(chat_id=LOG_CHANNEL, text=(script.NORSLTS.format(reqstr.id, reqstr.mention, mv_rqst)))
             k = await msg.reply_text(
-                text=script.I_CUDNT.format(mv_rqst),
+                text= "Hey sona, Sᴘᴇʟʟɪɴɢ Mɪꜱᴛᴀᴋᴇ Bʀᴏ ‼️\nᴅᴏɴ'ᴛ ᴡᴏʀʀʏ 😊 Cʜᴏᴏꜱᴇ ᴛʜᴇ ᴄᴏʀʀᴇᴄᴛ ᴏɴᴇ ʙᴇʟᴏᴡ 👇",
                 reply_markup=InlineKeyboardMarkup(button)
             )
             await asyncio.sleep(30)
@@ -2089,9 +2070,8 @@ async def advantage_spell_chok(client, msg):
                        InlineKeyboardButton("📝 ʀᴇǫᴜᴇꜱᴛ ʜᴇʀᴇ", url=f"https://t.me/+n-3mZ-8rPm4zMGVl")
             ]]
             if NO_RESULTS_MSG:
-                await client.send_message(chat_id=LOG_CHANNEL, text=(script.NORSLTS.format(reqstr.id, reqstr.mention, mv_rqst)))
             k = await msg.reply_text(
-                text=script.I_CUDNT.format(mv_rqst),
+                text= "Hey sona, Sᴘᴇʟʟɪɴɢ Mɪꜱᴛᴀᴋᴇ Bʀᴏ ‼️\nᴅᴏɴ'ᴛ ᴡᴏʀʀʏ 😊 Cʜᴏᴏꜱᴇ ᴛʜᴇ ᴄᴏʀʀᴇᴄᴛ ᴏɴᴇ ʙᴇʟᴏᴡ 👇",
                 reply_markup=InlineKeyboardMarkup(button)
             )
             await asyncio.sleep(30)
