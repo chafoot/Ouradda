@@ -2055,7 +2055,6 @@ async def advantage_spell_chok(msg):
             button = [[
                        InlineKeyboardButton("📝 ʀᴇǫᴜᴇꜱᴛ ʜᴇʀᴇ", url=f"https://t.me/+n-3mZ-8rPm4zMGVl")
             ]]
-            if NO_RESULTS_MSG:
             k = await msg.reply_text(
                 text= "Hey sona, Sᴘᴇʟʟɪɴɢ Mɪꜱᴛᴀᴋᴇ Bʀᴏ ‼️\nᴅᴏɴ'ᴛ ᴡᴏʀʀʏ 😊 Cʜᴏᴏꜱᴇ ᴛʜᴇ ᴄᴏʀʀᴇᴄᴛ ᴏɴᴇ ʙᴇʟᴏᴡ 👇",
                 reply_markup=InlineKeyboardMarkup(button)
@@ -2069,7 +2068,6 @@ async def advantage_spell_chok(msg):
             button = [[
                        InlineKeyboardButton("📝 ʀᴇǫᴜᴇꜱᴛ ʜᴇʀᴇ", url=f"https://t.me/+n-3mZ-8rPm4zMGVl")
             ]]
-            if NO_RESULTS_MSG:
             k = await msg.reply_text(
                 text= "Hey sona, Sᴘᴇʟʟɪɴɢ Mɪꜱᴛᴀᴋᴇ Bʀᴏ ‼️\nᴅᴏɴ'ᴛ ᴡᴏʀʀʏ 😊 Cʜᴏᴏꜱᴇ ᴛʜᴇ ᴄᴏʀʀᴇᴄᴛ ᴏɴᴇ ʙᴇʟᴏᴡ 👇",
                 reply_markup=InlineKeyboardMarkup(button)
