@@ -223,7 +223,7 @@ async def youtube_dl_call_back(client, query):
             )
             logger.info(images)'''
             await query.edit_message_text(
-                text="**initiating Lazy Upload** ⚡",
+                text="**initiating Our Addaa Upload** ⚡",
             )
 
             start_time = time.time()
