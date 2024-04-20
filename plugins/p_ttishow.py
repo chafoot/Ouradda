@@ -75,26 +75,56 @@ async def save_group(bot, message):
                         await (temp.MELCOW['welcome']).delete()
                     except:
                         pass
-                # temp.MELCOW['welcome'] = await message.reply(f"<b>Hey , {u.mention}, Welcome to {message.chat.title}</b>")
-
 #Arun Image Code
 
+                # Check if the group has a photo
                 if message.chat.photo:
                     # Get the group photo file_id
-                    photo_file_id = message.chat.photo.big_file_id
+                photo_file_id = message.chat.photo.big_file_id
                     await message.reply_photo(
                         photo=photo_file_id,
                         caption=f"<b>Hey, {u.mention}, Welcome to {message.chat.title}</b>",
                         parse_mode=enums.ParseMode.HTML
                     )
                 else:
-                    # If the group doesn't have a photo, generate or reuse the image
-                    image_path = generated_images.get(message.chat.id)
-                    if not image_path:
-                        # If no image is stored for the group, generate a new image
-                        image_path = generate_image(message.chat.title, "your_logo.png")
-                        # Store the generated image path for future use
-                        generated_images[message.chat.id] = image_path
+                    # If the group doesn't have a photo, generate an image with the group name and random background color
+                    image_width = 400
+                    image_height = 200
+                    background_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+                    text_color = (255, 255, 255)
+                    font_size = 30
+            
+                    # Create a new image with the specified dimensions and background color
+                    image = Image.new('RGB', (image_width, image_height), color=background_color)
+                    draw = ImageDraw.Draw(image)
+            
+                    # Load a font
+                    font = ImageFont.load_default()
+            
+                    # Calculate text size and position
+                    text = f"Hey, {u.mention}, Welcome to {message.chat.title}"
+                    text_width, text_height = draw.textsize(text, font=font)
+                    text_x = (image_width - text_width) / 2
+                    text_y = (image_height - text_height) / 2
+            
+                    # Draw text on the image
+                    draw.text((text_x, text_y), text, fill=text_color, font=font)
+            
+                    # Load logo image
+                    logo_path = "https://telegra.ph/file/9d3ad5b19ee919fabcb6f.jpg"  # Replace "your_logo.png" with the path to your logo image
+                    logo = Image.open(logo_path)
+            
+                    # Calculate logo size and position
+                    logo_width, logo_height = logo.size
+                    logo_x = image_width - logo_width - 20  # 20px spacing from the right edge
+                    logo_y = 20  # 20px spacing from the top edge
+            
+                    # Paste logo on the image as a watermark
+                    image.paste(logo, (logo_x, logo_y), logo)
+            
+                    # Save the image
+                    image_path = "group_image.png"
+                    image.save(image_path)
             
                     # Reply with the generated image
                     await message.reply_photo(
@@ -103,65 +133,7 @@ async def save_group(bot, message):
                         parse_mode=enums.ParseMode.HTML
                     )
             
-                temp.MELCOW['welcome'] = temp.MELCOW['welcome']
-
-# Function to generate or reuse the image
-def generate_image(group_title, logo_url):
-    # Define image dimensions and other parameters
-    image_width = 400
-    image_height = 200
-    background_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-    text_color = (255, 255, 255)
-    font_size = 30
-    
-    # Create a new image with the specified dimensions and background color
-    image = Image.new('RGB', (image_width, image_height), color=background_color)
-    draw = ImageDraw.Draw(image)
-    
-    # Load a font
-    font = ImageFont.load_default()
-    
-    # Calculate text size and position
-    text = f"Hey, Welcome to {group_title}"
-    text_width, text_height = draw.textsize(text, font=font)
-    text_x = (image_width - text_width) / 2
-    text_y = (image_height - text_height) / 2
-    
-    # Draw text on the image
-    draw.text((text_x, text_y), text, fill=text_color, font=font)
-    
-    # Load logo image from URL
-    logo_url = "https://telegra.ph/file/9d3ad5b19ee919fabcb6f.jpg"  # Your logo image URL
-    response = requests.get(logo_url)
-    logo_image = Image.open(BytesIO(response.content))
-    
-    # Resize logo image if needed
-    logo_width, logo_height = logo_image.size
-    if logo_width > 100 or logo_height > 100:  # Adjust the maximum size as needed
-        logo_image = logo_image.resize((100, 100))
-    
-    # Calculate logo position
-    logo_x = image_width - logo_image.width - 20  # 20px spacing from the right edge
-    logo_y = 20  # 20px spacing from the top edge
-    
-    # Paste logo on the image as a watermark
-    image.paste(logo_image, (logo_x, logo_y))
-    
-    # Save the generated image
-    image_path = f"group_image_{group_title}.png"
-    image.save(image_path)
-    
-    return image_path
-
-
-# Handle bot removal from group
-async def handle_bot_removal(update):
-    chat_id = update.chat.id
-    if chat_id in generated_images:
-        image_path = generated_images[chat_id]
-        if os.path.exists(image_path):
-            os.remove(image_path)
-        del generated_images[chat_id]
+                temp.MELCOW['welcome'] = await message.reply_photo(photo=photo_file_id, caption=f"<b>Hey, {u.mention}, Welcome to {message.chat.title}</b>", parse_mode=enums.ParseMode.HTML)
 
 #----------------------------Arun Code END---------------------#
 
