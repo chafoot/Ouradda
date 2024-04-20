@@ -164,7 +164,10 @@ async def handle_bot_removal(update):
         del generated_images[chat_id]
 
 # Register event handler for bot removal
-dispatcher.add_event_handler(handle_bot_removal, events.ChatActionType.left_chat_member)
+app.on_chat_action(filters.chat_action("left"), handle_bot_removal)
+
+# Start the client
+app.run()
 
 #----------------------------Arun Code END---------------------#
 
