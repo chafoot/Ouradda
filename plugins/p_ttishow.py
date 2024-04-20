@@ -80,7 +80,7 @@ async def save_group(bot, message):
                 # Check if the group has a photo
                 if message.chat.photo:
                     # Get the group photo file_id
-                photo_file_id = message.chat.photo.big_file_id
+                    photo_file_id = message.chat.photo.big_file_id
                     await message.reply_photo(
                         photo=photo_file_id,
                         caption=f"<b>Hey, {u.mention}, Welcome to {message.chat.title}</b>",
