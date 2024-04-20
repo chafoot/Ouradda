@@ -10,6 +10,7 @@ from pyrogram.errors import ChatAdminRequired
 import random
 import asyncio
 import os
+import requests
 from PIL import Image, ImageDraw, ImageFont
 
 generated_images = {}
@@ -151,6 +152,19 @@ def generate_image(group_title, logo_url):
     image.save(image_path)
     
     return image_path
+
+
+# Handle bot removal from group
+async def handle_bot_removal(update):
+    chat_id = update.chat.id
+    if chat_id in generated_images:
+        image_path = generated_images[chat_id]
+        if os.path.exists(image_path):
+            os.remove(image_path)
+        del generated_images[chat_id]
+
+# Register event handler for bot removal
+dispatcher.add_event_handler(handle_bot_removal, events.ChatActionType.left_chat_member)
 
 #----------------------------Arun Code END---------------------#
 
