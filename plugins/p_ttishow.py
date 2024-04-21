@@ -8,9 +8,14 @@ from utils import get_size, temp, get_settings
 from Script import script
 from pyrogram.errors import ChatAdminRequired
 from PIL import Image, ImageDraw, ImageFont
+import random
+import requests
+from io import BytesIO
 
 """-----------------------------------------https://t.me/LazyDeveloper --------------------------------------"""
 
+
+@Client.on_message(filters.new_chat_members & filters.group)
 
 async def get_group_photo(bot, chat_id):
     try:
@@ -20,28 +25,31 @@ async def get_group_photo(bot, chat_id):
     except Exception as e:
         print(f"Failed to get group photo: {e}")
     return None
-    
 
-async def generate_welcome_image(message):
+
+async def generate_welcome_image(bot, message):
     chat_title = message.chat.title
-    group_photo = get_group_photo(bot, message.chat.id)
+    group_photo_id = await get_group_photo(bot, message.chat.id)
 
-    if group_photo is None:
-        # If group has no photo, generate an image with group name
-        image = Image.new('RGB', (400, 200), color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+    if group_photo_id:
+        # Download the group's photo
+        file = await bot.download_media(group_photo_id)
+        image = Image.open(file)
+    else:
+        # Generate a simple image if the group has no photo
+        image = Image.new('RGB', (400, 200), color=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
         draw = ImageDraw.Draw(image)
         font = ImageFont.truetype("arial.ttf", 24)
         text = f"Welcome to {chat_title}"
         text_width, text_height = draw.textsize(text, font)
         draw.text(((400 - text_width) // 2, (200 - text_height) // 2), text, font=font, fill="white")
-        image.save("welcome_image.png")
-        return "welcome_image.png"
-    else:
-        # If group has a photo, return None
-        return None
+
+    # Save the generated image
+    welcome_image_path = "welcome_image.png"
+    image.save(welcome_image_path)
+    return welcome_image_path
 
 
-@Client.on_message(filters.new_chat_members & filters.group)
 async def save_group(bot, message):
     r_j_check = [u.id for u in message.new_chat_members]
     if temp.ME in r_j_check:
@@ -90,21 +98,21 @@ async def save_group(bot, message):
         await bot.send_message(LAZY_GROUP_LOGS,
                             text=f"Hey babe.\n I am added forcefully to this group named **{chatTitle}** Please tell me if you like to restrict this group...",
                             reply_markup=lazy_markup)
-    else:
-        settings = await get_settings(message.chat.id)
-        if settings["welcome"]:
-            for u in message.new_chat_members:
-                group_photo_id = await get_group_photo(bot, message.chat.id)
-                welcome_text = f"Welcome to {message.chat.title}, {u.mention}!"
-                if group_photo_id:
-                # If group has a photo, send the photo with the welcome caption
-                    await message.reply_photo(
-                        photo=group_photo_id,
-                        caption=welcome_text,
-                    )
-                else:
-                    # If no group photo, just send a welcome text message
-                    await message.reply_text(text=welcome_text)
+    # else:
+    #     settings = await get_settings(message.chat.id)
+    #     if settings["welcome"]:
+    #         for u in message.new_chat_members:
+    #             group_photo_id = await get_group_photo(bot, message.chat.id)
+    #             welcome_text = f"Welcome to {message.chat.title}, {u.mention}!"
+    #             if group_photo_id:
+    #             # If group has a photo, send the photo with the welcome caption
+    #                 await message.reply_photo(
+    #                     photo=group_photo_id,
+    #                     caption=welcome_text,
+    #                 )
+    #             else:
+    #                 # If no group photo, just send a welcome text message
+    #                 await message.reply_text(text=welcome_text)
                 
                 # if (temp.MELCOW).get('welcome') is not None:
                 #     try:
@@ -112,6 +120,16 @@ async def save_group(bot, message):
                 #     except:
                 #         pass
                 # temp.MELCOW['welcome'] = await message.reply_photo(photo=photo_file_id, caption=f"Checking Bro")
+
+async def welcome_new_members(bot, message):
+    settings = await get_settings(message.chat.id)
+    if settings["welcome"]:
+        welcome_image_path = await generate_welcome_image(bot, message)
+        for u in message.new_chat_members:
+            welcome_text = f"Welcome to {message.chat.title}, {u.mention}!"
+            await message.reply_photo(
+                photo=open(welcome_image_path, 'rb'),
+                caption=welcome_text,
 
 
 
