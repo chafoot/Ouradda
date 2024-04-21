@@ -16,57 +16,24 @@ from PIL import Image, ImageDraw, ImageFont
 
 """-----------------------------------------https://t.me/LazyDeveloper --------------------------------------"""
 
-
-#Arun Image Code
-
 async def generate_welcome_image(message):
-  # Check if group has a chat photo
-  try:
-    chat_photo = await message.chat.photo.get_file()
-  except:
-    chat_photo = None
+    chat_title = message.chat.title
+    group_photo = get_group_photo(bot, message.chat.id)
 
-  if chat_photo:
-    # Download the chat photo
-    chat_photo_path = await chat_photo.download()
-  else:
-    # Create an image with the group title
-    text = message.chat.title
-    font_size = 50  # Adjust font size as needed
-    image_width, image_height = 800, 400  # Adjust image dimensions as needed
-    background_color = (255, 255, 255)  # White background
-
-    # Create a new image
-    image = Image.new('RGB', (image_width, image_height), background_color)
-    draw = ImageDraw.Draw(image)
-
-    # Load a font (adjust path if needed)
-    font = ImageFont.truetype("path/to/your/font.ttf", font_size)
-
-    # Calculate text width and position
-    text_width, text_height = draw.textsize(text, font=font)
-    text_x = (image_width - text_width) // 2
-    text_y = (image_height - text_height) // 2
-
-    # Draw the text
-    draw.text((text_x, text_y), text, fill=(0, 0, 0), font=font)
-
-    # Save the image as a temporary file
-    chat_photo_path = "welcome_image.jpg"
-    image.save(chat_photo_path)
-
-  # Welcome message with the image
-  try:
-    with open(chat_photo_path, 'rb') as photo:
-      await message.reply_photo(photo=photo, caption=f"Hey , {message.from_user.mention}, Welcome to {message.chat.title} ")
-  finally:
-    # Delete the temporary image file (if created)
-    if not chat_photo:
-      os.remove(chat_photo_path)
-                
-#----------------------------Arun Code END---------------------#
-
-
+    if group_photo is None:
+        # If group has no photo, generate an image with group name
+        image = Image.new('RGB', (400, 200), color=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+        draw = ImageDraw.Draw(image)
+        font = ImageFont.truetype("arial.ttf", 24)
+        text = f"Welcome to {chat_title}"
+        text_width, text_height = draw.textsize(text, font)
+        draw.text(((400 - text_width) // 2, (200 - text_height) // 2), text, font=font, fill="white")
+        image_path = "welcome_image.png"
+        image.save(image_path)
+        return image_path
+    else:
+        # If group has a photo, return None
+        return None
 
 @Client.on_message(filters.new_chat_members & filters.group)
 async def save_group(bot, message):
@@ -80,7 +47,7 @@ async def save_group(bot, message):
         if message.chat.id in temp.BANNED_CHATS:
             # Inspired from a boat of a banana tree
             buttons = [[
-                InlineKeyboardButton('Support', url=f'https://t.me/{SUPPORT_CHAT}')
+                InlineKeyboardButton('worked', url=f'https://t.me/{SUPPORT_CHAT}')
             ]]
             reply_markup=InlineKeyboardMarkup(buttons)
             k = await message.reply(
@@ -98,6 +65,7 @@ async def save_group(bot, message):
             InlineKeyboardButton('🔔 Updates', url='https://t.me/LazyDeveloper')
         ]]
         reply_markup=InlineKeyboardMarkup(buttons)
+
         await message.reply_text(
             text=f"<b>Thank you For Adding Me In {message.chat.title} ❣️\n\nIf you have any questions & doubts about using me contact support.</b>",
             reply_markup=reply_markup)
@@ -119,15 +87,17 @@ async def save_group(bot, message):
                             reply_markup=lazy_markup)
     else:
         settings = await get_settings(message.chat.id)
+        # Generate welcome image
+        welcome_image = await generate_welcome_image(message)
         if settings["welcome"]:
             for u in message.new_chat_members:
                 if (temp.MELCOW).get('welcome') is not None:
                     try:
-                        await (temp.MELCOW['welcome']).delete()
+                        await message.reply_photo(photo=open(welcome_image, 'rb'), caption=f"<b>workign bro {message.chat.title} ❣️\n\nIf you have any questions & doubts about using me contact support.</b>")
+                        # await (temp.MELCOW['welcome']).delete()
                     except:
                         pass
-                temp.MELCOW['welcome'] = await generate_welcome_image(message)
-
+                temp.MELCOW['welcome'] = await message.reply_photo(photo=open(welcome_image, 'rb'), caption=f"<b>workign bro {message.chat.title} ❣️\n\nIf you have any questions & doubts about using me contact support.</b>")
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
