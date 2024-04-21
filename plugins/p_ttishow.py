@@ -17,37 +17,61 @@ from io import BytesIO
 
 @Client.on_message(filters.new_chat_members & filters.group)
 
-async def get_group_photo(bot, chat_id):
-    try:
-        chat = await bot.get_chat(chat_id)
-        if chat.photo:
-            return chat.photo.big_file_id
-    except Exception as e:
-        print(f"Failed to get group photo: {e}")
-    return None
+
+def welcome(update, context, new_member):
+    """ Welcomes a user to the chat """
+
+    message = update.message
+    chat_id = message.chat.id
+    logger.info(
+        "%s joined to chat %d (%s)",
+        escape(new_member.first_name),
+        chat_id,
+        escape(message.chat.title),
+    )
+
+    # Pull the custom message for this chat from the database
+    text = db.get(str(chat_id))
+
+    # Use default message if there's no custom one set
+    if text is None:
+        text = "Hello $username! Welcome to $title 😊"
+        
+
+    # Replace placeholders and send message
+    text = text.replace("$username", new_member.first_name)
+    text = text.replace("$title", message.chat.title)
+    send_async(context, chat_id=chat_id, text=text, parse_mode=ParseMode.HTML)
 
 
-async def generate_welcome_image(bot, message):
-    chat_title = message.chat.title
-    group_photo_id = await get_group_photo(bot, message.chat.id)
 
-    if group_photo_id:
-        # Download the group's photo
-        file = await bot.download_media(group_photo_id)
-        image = Image.open(file)
-    else:
-        # Generate a simple image if the group has no photo
-        image = Image.new('RGB', (400, 200), color=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
-        draw = ImageDraw.Draw(image)
-        font = ImageFont.truetype("arial.ttf", 24)
-        text = f"Welcome to {chat_title}"
-        text_width, text_height = draw.textsize(text, font)
-        draw.text(((400 - text_width) // 2, (200 - text_height) // 2), text, font=font, fill="white")
+    def goodbye(update, context):
+    """ Sends goodbye message when a user left the chat """
 
-    # Save the generated image
-    welcome_image_path = "welcome_image.png"
-    image.save(welcome_image_path)
-    return welcome_image_path
+    message = update.message
+    chat_id = message.chat.id
+    logger.info(
+        "%s left chat %d (%s)",
+        escape(message.left_chat_member.first_name),
+        chat_id,
+        escape(message.chat.title),
+    )
+
+    # Pull the custom message for this chat from the database
+    text = db.get(str(chat_id) + "_bye")
+
+    # Goodbye was disabled
+    if text is False:
+        return
+
+    # Use default message if there's no custom one set
+    if text is None:
+        text = "Goodbye, $username!"
+
+    # Replace placeholders and send message
+    text = text.replace("$username", message.left_chat_member.first_name)
+    text = text.replace("$title", message.chat.title)
+    send_async(context, chat_id=chat_id, text=text, parse_mode=ParseMode.HTML)
 
 
 async def save_group(bot, message):
@@ -98,39 +122,17 @@ async def save_group(bot, message):
         await bot.send_message(LAZY_GROUP_LOGS,
                             text=f"Hey babe.\n I am added forcefully to this group named **{chatTitle}** Please tell me if you like to restrict this group...",
                             reply_markup=lazy_markup)
-    # else:
-    #     settings = await get_settings(message.chat.id)
-    #     if settings["welcome"]:
-    #         for u in message.new_chat_members:
-    #             group_photo_id = await get_group_photo(bot, message.chat.id)
-    #             welcome_text = f"Welcome to {message.chat.title}, {u.mention}!"
-    #             if group_photo_id:
-    #             # If group has a photo, send the photo with the welcome caption
-    #                 await message.reply_photo(
-    #                     photo=group_photo_id,
-    #                     caption=welcome_text,
-    #                 )
-    #             else:
-    #                 # If no group photo, just send a welcome text message
-    #                 await message.reply_text(text=welcome_text)
-                
-                # if (temp.MELCOW).get('welcome') is not None:
-                #     try:
-                #         await (temp.MELCOW['welcome']).delete()
-                #     except:
-                #         pass
-                # temp.MELCOW['welcome'] = await message.reply_photo(photo=photo_file_id, caption=f"Checking Bro")
+    else:
+        settings = await get_settings(message.chat.id)
+        if settings["welcome"]:
+            for u in message.new_chat_members:
+                if (temp.MELCOW).get('welcome') is not None:
+                    try:
+                        await (temp.MELCOW['welcome']).delete()
+                    except:
+                        pass
+                temp.MELCOW['welcome'] = await message.reply(welcome)
 
-async def welcome_new_members(bot, message):
-    settings = await get_settings(message.chat.id)
-    if settings["welcome"]:
-        welcome_image_path = await generate_welcome_image(bot, message)
-        for u in message.new_chat_members:
-            welcome_text = f"Welcome to {message.chat.title}, {u.mention}!"
-            await message.reply_photo(
-                photo=open(welcome_image_path, 'rb'),
-                caption=welcome_text,
-            )
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
