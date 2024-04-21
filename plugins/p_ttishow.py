@@ -13,7 +13,6 @@ import os
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
-generated_images = {}
 
 """-----------------------------------------https://t.me/LazyDeveloper --------------------------------------"""
 
@@ -43,7 +42,7 @@ async def save_group(bot, message):
             await bot.leave_chat(message.chat.id)
             return
         buttons = [[
-            InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help"),
+            InlineKeyboardButton('🤥 Help', url=f"http  s://t.me/{temp.U_NAME}?start=help"),
             InlineKeyboardButton('🔔 Updates', url='https://t.me/LazyDeveloper')
         ]]
         reply_markup=InlineKeyboardMarkup(buttons)
@@ -75,66 +74,55 @@ async def save_group(bot, message):
                         await (temp.MELCOW['welcome']).delete()
                     except:
                         pass
+                temp.MELCOW['welcome'] = await generate_welcome_image(message)
+
 #Arun Image Code
 
-                # Check if the group has a photo
-                if message.chat.photo:
-                    # Get the group photo file_id
-                    photo_file_id = message.chat.photo.big_file_id
-                    await message.reply_photo(
-                        photo=photo_file_id,
-                        caption=f"<b>Hey, {u.mention}, Welcome to {message.chat.title}</b>",
-                        parse_mode=enums.ParseMode.HTML
-                    )
-                else:
-                    # If the group doesn't have a photo, generate an image with the group name and random background color
-                    image_width = 400
-                    image_height = 200
-                    background_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-                    text_color = (255, 255, 255)
-                    font_size = 30
-            
-                    # Create a new image with the specified dimensions and background color
-                    image = Image.new('RGB', (image_width, image_height), color=background_color)
-                    draw = ImageDraw.Draw(image)
-            
-                    # Load a font
-                    font = ImageFont.load_default()
-            
-                    # Calculate text size and position
-                    text = f"Hey, {u.mention}, Welcome to {message.chat.title}"
-                    text_width, text_height = draw.textsize(text, font=font)
-                    text_x = (image_width - text_width) / 2
-                    text_y = (image_height - text_height) / 2
-            
-                    # Draw text on the image
-                    draw.text((text_x, text_y), text, fill=text_color, font=font)
-            
-                    # Load logo image
-                    logo_path = "https://telegra.ph/file/9d3ad5b19ee919fabcb6f.jpg"  # Replace "your_logo.png" with the path to your logo image
-                    logo = Image.open(logo_path)
-            
-                    # Calculate logo size and position
-                    logo_width, logo_height = logo.size
-                    logo_x = image_width - logo_width - 20  # 20px spacing from the right edge
-                    logo_y = 20  # 20px spacing from the top edge
-            
-                    # Paste logo on the image as a watermark
-                    image.paste(logo, (logo_x, logo_y), logo)
-            
-                    # Save the image
-                    image_path = "group_image.png"
-                    image.save(image_path)
-            
-                    # Reply with the generated image
-                    await message.reply_photo(
-                        photo=image_path,
-                        caption=f"<b>Hey, {u.mention}, Welcome to {message.chat.title}</b>",
-                        parse_mode=enums.ParseMode.HTML
-                    )
-            
-                temp.MELCOW['welcome'] = await message.reply_photo(photo=photo_file_id, caption=f"<b>Hey, {u.mention}, Welcome to {message.chat.title}</b>", parse_mode=enums.ParseMode.HTML)
+async def generate_welcome_image(message):
+  # Check if group has a chat photo
+  try:
+    chat_photo = await message.chat.photo.get_file()
+  except:
+    chat_photo = None
 
+  if chat_photo:
+    # Download the chat photo
+    chat_photo_path = await chat_photo.download()
+  else:
+    # Create an image with the group title
+    text = message.chat.title
+    font_size = 50  # Adjust font size as needed
+    image_width, image_height = 800, 400  # Adjust image dimensions as needed
+    background_color = (255, 255, 255)  # White background
+
+    # Create a new image
+    image = Image.new('RGB', (image_width, image_height), background_color)
+    draw = ImageDraw.Draw(image)
+
+    # Load a font (adjust path if needed)
+    font = ImageFont.truetype("path/to/your/font.ttf", font_size)
+
+    # Calculate text width and position
+    text_width, text_height = draw.textsize(text, font=font)
+    text_x = (image_width - text_width) // 2
+    text_y = (image_height - text_height) // 2
+
+    # Draw the text
+    draw.text((text_x, text_y), text, fill=(0, 0, 0), font=font)
+
+    # Save the image as a temporary file
+    chat_photo_path = "welcome_image.jpg"
+    image.save(chat_photo_path)
+
+  # Welcome message with the image
+  try:
+    with open(chat_photo_path, 'rb') as photo:
+      await message.reply_photo(photo=photo, caption=f"Hey , {message.from_user.mention}, Welcome to {message.chat.title} ")
+  finally:
+    # Delete the temporary image file (if created)
+    if not chat_photo:
+      os.remove(chat_photo_path)
+                
 #----------------------------Arun Code END---------------------#
 
 
