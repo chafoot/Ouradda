@@ -84,10 +84,10 @@ async def save_group(bot, message):
         if settings["welcome"]:
             for u in message.new_chat_members:
                 photo_file_id = message.chat.photo.big_file_id if message.chat.photo else default_photo_file_id
-                await message.reply_photo(
-                photo=photo_file_id,
-                caption=f"Checking Bro",  # Replace with your desired caption
-            )
+                temp.MELCOW['welcome'] = await message.reply_photo(
+                                                                    photo=photo_file_id,
+                                                                    caption=f"Checking Bro",  # Replace with your desired caption
+                                                                )
                 # if (temp.MELCOW).get('welcome') is not None:
                 #     try:
                 #         await (temp.MELCOW['welcome']).delete()
