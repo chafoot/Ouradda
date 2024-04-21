@@ -68,24 +68,37 @@ async def save_group(bot, message):
                         await (temp.MELCOW['welcome']).delete()
                     except:
                         pass
-                    if chat.photo:
-                        await message.reply_text(
-                            text=f"<b>Welcome to {chat.title}!\n\nThank you for joining our group.</b>",
-                                reply_markup=InlineKeyboardMarkup(
-                                    [[InlineKeyboardButton("Visit Group", url=f"https://t.me/{chat.username}")]]
-                            ),
-                            photo=chat.photo.big_file_id
-                        )
+                temp.MELCOW['welcome'] = await message.reply(f"<b>Hey , {u.mention}, Welcome to {message.chat.title}</b>")
 
-                    else:
-                        # If no profile picture, send a default welcome message
-                        await message.reply_text(
-                            text=f"<b>Welcome to {chat.title}!\n\nThank you for joining our group.</b>",
-                                reply_markup=InlineKeyboardMarkup(
-                                    [[InlineKeyboardButton("Visit Group", url=f"https://t.me/{chat.username}")]]
-                                )
-                        )
-                # temp.MELCOW['welcome'] = await message.reply(f"<b>Hey , {u.mention}, Welcome to {message.chat.title}</b>")
+@Client.on_message(filters.new_chat_members & filters.group)
+async def welcome_new_member(bot, message):
+    # Get welcome settings (optional)
+    # settings = await get_settings(message.chat.id)
+    # if not settings["welcome"]:
+    #     return
+
+    for u in message.new_chat_members:
+        # Get group profile picture
+        group_photo = message.chat.photo
+
+        if group_photo:
+            photo_file_id = group_photo.big_file_id
+
+            # Send welcome message with group profile picture
+            caption = f"Hi {u.mention}, welcome to {message.chat.title}!"
+            keyboard = InlineKeyboardMarkup(
+                [[InlineKeyboardButton("working Bro", url="https://t.me/your_channel")]]
+            )
+            await message.reply_photo(
+                photo=photo_file_id,
+                caption=caption,
+                reply_markup=keyboard,
+                parse_mode=enums.ParseMode.HTML
+            )
+        else:
+            # Send welcome message without group picture (optional)
+            caption = f"Hi {new_member.mention}, welcome to {message.chat.title}!"
+            await message.reply_text(caption, parse_mode=enums.ParseMode.HTML)
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
 async def leave_a_chat(bot, message):
