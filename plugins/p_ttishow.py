@@ -12,6 +12,16 @@ from PIL import Image, ImageDraw, ImageFont
 """-----------------------------------------https://t.me/LazyDeveloper --------------------------------------"""
 
 
+async def get_group_photo(bot, chat_id):
+    try:
+        chat = await bot.get_chat(chat_id)
+        if chat.photo:
+            return chat.photo.big_file_id
+    except Exception as e:
+        print(f"Failed to get group photo: {e}")
+    return None
+    
+
 async def generate_welcome_image(message):
     chat_title = message.chat.title
     group_photo = get_group_photo(bot, message.chat.id)
@@ -29,6 +39,7 @@ async def generate_welcome_image(message):
     else:
         # If group has a photo, return None
         return None
+
 
 @Client.on_message(filters.new_chat_members & filters.group)
 async def save_group(bot, message):
