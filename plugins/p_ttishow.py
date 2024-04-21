@@ -10,6 +10,25 @@ from pyrogram.errors import ChatAdminRequired
 
 """-----------------------------------------https://t.me/LazyDeveloper --------------------------------------"""
 
+
+async def generate_welcome_image(message):
+    chat_title = message.chat.title
+    group_photo = get_group_photo(bot, message.chat.id)
+
+    if group_photo is None:
+        # If group has no photo, generate an image with group name
+        image = Image.new('RGB', (400, 200), color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+        draw = ImageDraw.Draw(image)
+        font = ImageFont.truetype("arial.ttf", 24)
+        text = f"Welcome to {chat_title}"
+        text_width, text_height = draw.textsize(text, font)
+        draw.text(((400 - text_width) // 2, (200 - text_height) // 2), text, font=font, fill="white")
+        image.save("welcome_image.png")
+        return "welcome_image.png"
+    else:
+        # If group has a photo, return None
+        return None
+
 @Client.on_message(filters.new_chat_members & filters.group)
 async def save_group(bot, message):
     r_j_check = [u.id for u in message.new_chat_members]
@@ -63,42 +82,15 @@ async def save_group(bot, message):
         settings = await get_settings(message.chat.id)
         if settings["welcome"]:
             for u in message.new_chat_members:
+                welcome_image = await generate_welcome_image(message)
                 if (temp.MELCOW).get('welcome') is not None:
                     try:
                         await (temp.MELCOW['welcome']).delete()
                     except:
                         pass
-                temp.MELCOW['welcome'] = await message.reply(f"<b>Hey , {u.mention}, Welcome to {message.chat.title}</b>")
+                temp.MELCOW['welcome'] = await message.reply_photo(photo=open(welcome_image, 'rb'), caption=f"Checking Bro")
 
-@Client.on_message(filters.new_chat_members & filters.group)
-async def welcome_new_member(bot, message):
-    # Get welcome settings (optional)
-    # settings = await get_settings(message.chat.id)
-    # if not settings["welcome"]:
-    #     return
 
-    for u in message.new_chat_members:
-        # Get group profile picture
-        group_photo = message.chat.photo
-
-        if group_photo:
-            photo_file_id = group_photo.big_file_id
-
-            # Send welcome message with group profile picture
-            caption = f"Hi {u.mention}, welcome to {message.chat.title}!"
-            keyboard = InlineKeyboardMarkup(
-                [[InlineKeyboardButton("working Bro", url="https://t.me/your_channel")]]
-            )
-            await message.reply_photo(
-                photo=photo_file_id,
-                caption=caption,
-                reply_markup=keyboard,
-                parse_mode=enums.ParseMode.HTML
-            )
-        else:
-            # Send welcome message without group picture (optional)
-            caption = f"Hi {new_member.mention}, welcome to {message.chat.title}!"
-            await message.reply_text(caption, parse_mode=enums.ParseMode.HTML)
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
 async def leave_a_chat(bot, message):
