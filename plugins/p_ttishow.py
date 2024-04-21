@@ -83,11 +83,18 @@ async def save_group(bot, message):
         settings = await get_settings(message.chat.id)
         if settings["welcome"]:
             for u in message.new_chat_members:
-                photo_file_id = message.chat.photo.big_file_id if message.chat.photo else default_photo_file_id
-                temp.MELCOW['welcome'] = await message.reply_photo(
-                                                                    photo=photo_file_id,
-                                                                    caption=f"Checking Bro",  # Replace with your desired caption
-                                                                )
+                group_photo_id = await get_group_photo(bot, message.chat.id)
+                welcome_text = f"Welcome to {message.chat.title}, {u.mention}!"
+                if group_photo_id:
+                # If group has a photo, send the photo with the welcome caption
+                await message.reply_photo(
+                    photo=group_photo_id,
+                    caption=welcome_text,
+                )
+            else:
+                # If no group photo, just send a welcome text message
+                await message.reply_text(text=welcome_text)
+                
                 # if (temp.MELCOW).get('welcome') is not None:
                 #     try:
                 #         await (temp.MELCOW['welcome']).delete()
