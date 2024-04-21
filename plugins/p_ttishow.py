@@ -29,7 +29,7 @@ def generate_welcome_image(chat_title):
     image.save(image_path)
     return image_path
 
-@Client.on_chat_member()
+@Client.on_message()
 async def welcome_new_member(bot, update):
     if update.new_chat_members:
         for member in update.new_chat_members:
