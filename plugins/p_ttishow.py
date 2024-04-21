@@ -16,6 +16,58 @@ from PIL import Image, ImageDraw, ImageFont
 
 """-----------------------------------------https://t.me/LazyDeveloper --------------------------------------"""
 
+
+#Arun Image Code
+
+async def generate_welcome_image(message):
+  # Check if group has a chat photo
+  try:
+    chat_photo = await message.chat.photo.get_file()
+  except:
+    chat_photo = None
+
+  if chat_photo:
+    # Download the chat photo
+    chat_photo_path = await chat_photo.download()
+  else:
+    # Create an image with the group title
+    text = message.chat.title
+    font_size = 50  # Adjust font size as needed
+    image_width, image_height = 800, 400  # Adjust image dimensions as needed
+    background_color = (255, 255, 255)  # White background
+
+    # Create a new image
+    image = Image.new('RGB', (image_width, image_height), background_color)
+    draw = ImageDraw.Draw(image)
+
+    # Load a font (adjust path if needed)
+    font = ImageFont.truetype("path/to/your/font.ttf", font_size)
+
+    # Calculate text width and position
+    text_width, text_height = draw.textsize(text, font=font)
+    text_x = (image_width - text_width) // 2
+    text_y = (image_height - text_height) // 2
+
+    # Draw the text
+    draw.text((text_x, text_y), text, fill=(0, 0, 0), font=font)
+
+    # Save the image as a temporary file
+    chat_photo_path = "welcome_image.jpg"
+    image.save(chat_photo_path)
+
+  # Welcome message with the image
+  try:
+    with open(chat_photo_path, 'rb') as photo:
+      await message.reply_photo(photo=photo, caption=f"Hey , {message.from_user.mention}, Welcome to {message.chat.title} ")
+  finally:
+    # Delete the temporary image file (if created)
+    if not chat_photo:
+      os.remove(chat_photo_path)
+                
+#----------------------------Arun Code END---------------------#
+
+
+
 @Client.on_message(filters.new_chat_members & filters.group)
 async def save_group(bot, message):
     r_j_check = [u.id for u in message.new_chat_members]
@@ -76,54 +128,6 @@ async def save_group(bot, message):
                         pass
                 temp.MELCOW['welcome'] = await generate_welcome_image(message)
 
-#Arun Image Code
-
-async def generate_welcome_image(message):
-  # Check if group has a chat photo
-  try:
-    chat_photo = await message.chat.photo.get_file()
-  except:
-    chat_photo = None
-
-  if chat_photo:
-    # Download the chat photo
-    chat_photo_path = await chat_photo.download()
-  else:
-    # Create an image with the group title
-    text = message.chat.title
-    font_size = 50  # Adjust font size as needed
-    image_width, image_height = 800, 400  # Adjust image dimensions as needed
-    background_color = (255, 255, 255)  # White background
-
-    # Create a new image
-    image = Image.new('RGB', (image_width, image_height), background_color)
-    draw = ImageDraw.Draw(image)
-
-    # Load a font (adjust path if needed)
-    font = ImageFont.truetype("path/to/your/font.ttf", font_size)
-
-    # Calculate text width and position
-    text_width, text_height = draw.textsize(text, font=font)
-    text_x = (image_width - text_width) // 2
-    text_y = (image_height - text_height) // 2
-
-    # Draw the text
-    draw.text((text_x, text_y), text, fill=(0, 0, 0), font=font)
-
-    # Save the image as a temporary file
-    chat_photo_path = "welcome_image.jpg"
-    image.save(chat_photo_path)
-
-  # Welcome message with the image
-  try:
-    with open(chat_photo_path, 'rb') as photo:
-      await message.reply_photo(photo=photo, caption=f"Hey , {message.from_user.mention}, Welcome to {message.chat.title} ")
-  finally:
-    # Delete the temporary image file (if created)
-    if not chat_photo:
-      os.remove(chat_photo_path)
-                
-#----------------------------Arun Code END---------------------#
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
