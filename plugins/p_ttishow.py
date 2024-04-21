@@ -130,7 +130,7 @@ async def welcome_new_members(bot, message):
             await message.reply_photo(
                 photo=open(welcome_image_path, 'rb'),
                 caption=welcome_text,
-
+            )
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
