@@ -16,24 +16,34 @@ from PIL import Image, ImageDraw, ImageFont
 
 """-----------------------------------------https://t.me/LazyDeveloper --------------------------------------"""
 
-async def generate_welcome_image(message):
-    chat_title = message.chat.title
-    group_photo = get_group_photo(bot, message.chat.id)
 
-    if group_photo is None:
-        # If group has no photo, generate an image with group name
-        image = Image.new('RGB', (400, 200), color=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
-        draw = ImageDraw.Draw(image)
-        font = ImageFont.truetype("arial.ttf", 24)
-        text = f"Welcome to {chat_title}"
-        text_width, text_height = draw.textsize(text, font)
-        draw.text(((400 - text_width) // 2, (200 - text_height) // 2), text, font=font, fill="white")
-        image_path = "welcome_image.png"
-        image.save(image_path)
-        return image_path
-    else:
-        # If group has a photo, return None
-        return None
+def generate_welcome_image(chat_title):
+    # Generate an image with the group name
+    image = Image.new('RGB', (400, 200), color=(255, 255, 255))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype("arial.ttf", 24)
+    text = f"Welcome to {chat_title}"
+    text_width, text_height = draw.textsize(text, font)
+    draw.text(((400 - text_width) // 2, (200 - text_height) // 2), text, font=font, fill="black")
+    image_path = "welcome_image.png"
+    image.save(image_path)
+    return image_path
+
+@Client.on_chat_member()
+async def welcome_new_member(bot, update):
+    if update.new_chat_members:
+        for member in update.new_chat_members:
+            chat_title = update.chat.title
+            # Check if the group has a photo
+            group_photo = update.chat.photo
+            if group_photo:
+                # If group has a photo, send welcome message with photo
+                await update.reply_photo(photo=open("group_photo.jpg", "rb"), caption=f"Welcome to {chat_title}!")
+            else:
+                # If group has no photo, generate welcome image and send with welcome message
+                welcome_image = generate_welcome_image(chat_title)
+                await update.reply_photo(photo=open(welcome_image, "rb"), caption=f"Welcome to {chat_title}!")
+
 
 @Client.on_message(filters.new_chat_members & filters.group)
 async def save_group(bot, message):
