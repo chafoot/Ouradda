@@ -11,7 +11,7 @@ Glad to see you here. It seems that you really love <a href=https://t.me/ouradda
 Thanks for thinking about us.\nIt seems that you really love <a href=https://t.me/ouraddaa >Ouraddaa's</a> work.\n\n<b>For your kind information, we do not ask or force anyone for any kind of payment</b>. But if you really want to donate us then you can send money to us from below links...\n\nT❤️ hank you so much..
     """
     REQ_AUTH_TEXT = """Hello {},
-\nSorry sweetie.. You must have to be the Authentic User to complete this operation...\n\n👮‍♀ REPORT ISSUE HERE: <a href=https://t.me/ouraddaa_chat>LazyDeveloper Support</a>\n\n
+\nSorry sweetie.. You must have to be the Authentic User to complete this operation...\n\n👮‍♀ REPORT ISSUE HERE: <a href=https://t.me/ouraddaa_chat>Our Addaa Support</a>\n\n
     """
     
     TEXT = "sᴇɴᴅ ᴍᴇ ᴀɴʏ ᴄᴜsᴛᴏᴍ ᴛʜᴜᴍʙɴᴀɪʟ ᴛᴏ sᴇᴛ ɪᴛ"
@@ -78,7 +78,7 @@ Here is the help for my COMMANDS."""
 - an open source project. """
     MANUELFILTER_TXT = """Help: <b>Filters</b>
 
-- Filter is the feature were users can set automated replies for a particular keyword and LazyPriness will respond whenever that keyword hits the message
+- Filter is the feature were users can set automated replies for a particular keyword and Our Addaa will respond whenever that keyword hits the message
 
 <b>NOTE:</b>
 1. BOT should have admin privillage.
@@ -127,7 +127,7 @@ Here is the help for my COMMANDS."""
     EXTRAMOD_TXT = """Help: <b>Extra Modules</b>
 
 <b>NOTE:</b>
-these are the extra features of Lazy Princess
+these are the extra features of  Our Addaa
 
 <b>Commands and Usage:</b>
 • /id - <code>get id of a specified user.</code>
