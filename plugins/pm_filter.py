@@ -1378,7 +1378,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         _, chatTitle, chatID = query.data.split(":")
         print(f"Debug: query.data={query.data}, chatID={chatID}, chatTitle={chatTitle}")
         try:
-            await client.send_message(chatID, text=f"Hello users !\n From now i will provide you contents 24X7 💘")
+            await client.send_message(chatID, text=f"Hello Guys!\n From now i will provide you all movie contents 24X7 💘")
             await db.verify_lazy_chat(int(chatID))
             temp.LAZY_VERIFIED_CHATS.append(int(chatID))
             btn = [
