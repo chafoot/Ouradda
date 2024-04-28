@@ -1650,7 +1650,7 @@ async def auto_filter(client, msg, spoll=False):
             search = message.text
             requested_movie = search.strip()
             user_id = message.from_user.id
-            chatTitle = chatTitle
+            chatTitle = message.chatTitle
             files, offset, total_results = await get_search_results(search.lower(), offset=0, filter=True)
             if not files:
                 await client.send_message(req_channel,f"-🦋 #REQUESTED_CONTENT 🦋-\n\n📝**Content Name** :`{search}`\n**Requested By**: {message.from_user.first_name}\n **USER ID**:{user_id}\n**User Mention**: {message.from_user.mention}\n Chat ID: {chatTitle}",
