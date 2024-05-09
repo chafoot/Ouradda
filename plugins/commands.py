@@ -330,7 +330,7 @@ async def channel_info(bot, message):
 async def log_file(bot, message):
     """Send log file"""
     try:
-        await message.reply_document('TelegramBot.txt')
+        await message.reply_document('OuraddaaBot.log')
     except Exception as e:
         await message.reply(str(e))
 
